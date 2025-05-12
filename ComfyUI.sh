@@ -1,4 +1,4 @@
-sudo apt install python-is-python3 python3.10-venv
+sudo apt install python-is-python3 python3.12-venv
 git clone https://github.com/comfyanonymous/ComfyUI.git --depth=1 ~/ComfyUI
 cd ~/ComfyUI
 python -m venv .venv
