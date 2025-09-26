@@ -1,18 +1,23 @@
+# Automates installation of ComfyUI in the user's home directory.
+# Installs Python venv, clones ComfyUI, creates and activates a virtual environment,
+# and installs required Python packages including PyTorch with CUDA 12.6 support.
+
 # Install Python venv
-sudo apt install python-is-python3 python3.12-venv
+sudo apt install -y python-is-python3 python3.12-venv
 
 # Clone ComfyUI only if it doesn't exist
 if [ ! -d "$HOME/ComfyUI" ]; then
-    git clone https://github.com/comfyanonymous/ComfyUI.git --depth=1 ~/ComfyUI
+    echo "Cloning ComfyUI repository..."
+    git clone https://github.com/comfyanonymous/ComfyUI.git --depth=1 ~/ComfyUI || { echo "Git clone failed!"; exit 1; }
 fi
 
 # Move into the ComfyUI directory
 cd "$HOME/ComfyUI"
 
-# Setup only if in the correct directory
-if [ "$PWD" = "$HOME/ComfyUI" ]; then
-    python -m venv .venv
-    source .venv/bin/activate
-    pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu126
-    pip install -r requirements.txt
-fi
+# Create and activate virtual environment
+python -m venv .venv
+source .venv/bin/activate
+
+# Install PyTorch with CUDA 12.6 support and other requirements
+pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu126
+pip install -r requirements.txt
