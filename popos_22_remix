@@ -1,0 +1,82 @@
+#!/bin/bash
+set -e
+
+# Update base system
+apt update
+apt upgrade -y
+
+# Enable universe & multiverse (for extra packages)
+add-apt-repository universe
+add-apt-repository multiverse
+
+# Remove GNOME and its apps safely
+apt purge -y --allow-remove-essential pop-desktop pop-de-gnome ubuntu-desktop gnome-shell gnome-session gnome-control-center gnome-software gnome-terminal nautilus evince rhythmbox Wgnome-calculator gedit gnome-system-monitor && apt autoremove -yS
+
+# Install KDE Plasma Desktop
+apt install -y kde-standard kde-plasma-desktop sddm papirus-icon-theme
+
+# Extra utilities & apps
+apt install -y vlc htop neofetch curl wget steam git git-lfs adb fastboot firefox
+
+# VS Code
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
+sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+apt update
+apt install -y code
+
+# GCC, Make, Build Essentials
+apt install -y build-essential gcc g++ make cmake
+
+# Java Development Kit
+apt install -y default-jdk
+
+# Python & pip
+apt install -y python3 python3-pip python3-venv
+
+# Remove preinstalled LibreOffice
+apt purge -y libreoffice* && apt autoremove -y
+
+# OnlyOffice
+wget -qO onlyoffice.deb https://download.onlyoffice.com/install/desktop/editors/linux/onlyoffice-desktopeditors_amd64.deb
+dpkg -i onlyoffice.deb || apt -f install -y
+rm onlyoffice.deb
+
+# Clean up
+apt autoremove -y
+apt clean
+
+echo "Executed Successfully!"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
